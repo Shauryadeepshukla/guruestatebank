@@ -97,7 +97,7 @@ export default function Footer() {
 
             <div className="space-y-5">
               <a
-                href="tel:+910000000000"
+                href="tel:+918282888888"
                 className="group flex items-center gap-4 text-sm text-white/55 transition-colors duration-300 hover:text-[#c5a46d]"
               >
                 <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 transition-colors group-hover:border-[#c5a46d]/40">
@@ -113,7 +113,7 @@ export default function Footer() {
                 <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 transition-colors group-hover:border-[#c5a46d]/40">
                   <Mail size={14} />
                 </span>
-                hello@guruestatesbank.in
+                guruestatesbank@gmail.com
               </a>
 
               <div className="pt-8">

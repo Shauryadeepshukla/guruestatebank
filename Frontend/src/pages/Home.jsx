@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { properties } from "../data/properties";
+import { Link } from "react-router-dom";
 
 const ease = [0.22, 1, 0.36, 1];
 
@@ -766,7 +767,7 @@ export default function Home() {
               </p>
             </motion.div>
 
-            <a
+            <Link
               href="/properties"
               className="group inline-flex items-center gap-2 text-sm font-semibold"
             >
@@ -775,14 +776,13 @@ export default function Home() {
                 size={16}
                 className="transition-transform group-hover:translate-x-1"
               />
-            </a>
+            </Link>
           </div>
 
           <div className="mt-14 grid gap-6 lg:grid-cols-3">
             {properties.map((property, i) => (
               <motion.a
-                href={`/properties/${property.id}`}
-                key={property.id}
+                href={`/properties`}
                 initial={{
                   opacity: 0,
                   y: 35,
@@ -1084,7 +1084,7 @@ export default function Home() {
             </a>
 
             <a
-              href="https://wa.me/"
+              href="https://wa.me/+918282888888"
               className="inline-flex items-center justify-center border border-[#070D14]/25 px-7 py-4 text-sm font-semibold text-[#070D14] transition hover:bg-[#070D14]/5"
             >
               WhatsApp Us
