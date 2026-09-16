@@ -12,7 +12,7 @@ export default function MobileCTA() {
           <Search size={15} /> SEARCH
         </Link>
         <a
-          href="https://wa.me/910000000000"
+          href="https://wa.me/+918282888888"
           className="flex items-center justify-center gap-2 bg-champagne py-3 text-[11px] font-semibold tracking-wider text-ink"
         >
           <MessageCircle size={15} /> WHATSAPP

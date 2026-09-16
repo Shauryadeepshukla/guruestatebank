@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter, useLocation } from "react-router-dom";
 import SiteLayout from "./components/layout/SiteLayout";
 import Home from "./pages/Home";
 import Properties from "./pages/Properties";
@@ -7,6 +7,9 @@ import Projects from "./pages/Projects";
 import Developers from "./pages/Developers";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
+import Services from "./pages/Services";
+import WhyGuru from "./pages/WhyGuru";
+import Insights from "./pages/Insights";
 
 export default function App() {
   return (
@@ -16,9 +19,12 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/Projects" element={<Projects />} />
           <Route path="/properties" element={<Properties />} />
+          <Route path="/Insights" element={<Insights />} />
           <Route path="/developers" element={<Developers />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
+          <Route path="/Services" element={<Services />} />
+          <Route path="/why-guru" element={<WhyGuru />} />
           <Route
             path="/projects"
             element={

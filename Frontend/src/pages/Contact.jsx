@@ -240,14 +240,14 @@ export default function Contact() {
               icon={MessageCircle}
               label="WhatsApp"
               value="WhatsApp an Advisor"
-              href="https://wa.me/8282888888"
+              href="https://wa.me/+918282888888"
             />
 
             <ContactCard
               icon={Mail}
               label="Email"
-              value="hello@guruestatesbank.com"
-              href="mailto:hello@guruestatesbank.com"
+              value="guruestatesbank@gmail.com"
+              href="mailto:guruestatesbank@gmail.com"
             />
 
             <div className="bg-[#240d0d] p-7 text-[#f8f3ea] sm:p-8">
