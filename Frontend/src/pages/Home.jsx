@@ -10,6 +10,12 @@ import {
   Sparkles,
   TrendingUp,
   Users,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Phone,
+  Send,
+  Clock3,
 } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { properties } from "../data/properties";
@@ -161,7 +167,61 @@ function HomeFilter({ label, value, options, onChange }) {
     </div>
   );
 }
+function HomeContactField({
+  label,
+  name,
+  placeholder,
+  type = "text",
+  required = false,
+}) {
+  return (
+    <div>
+      <label
+        htmlFor={`home-${name}`}
+        className="mb-3 block text-xs font-bold uppercase tracking-[0.16em] text-[#070D14]/55"
+      >
+        {label}
+      </label>
 
+      <input
+        id={`home-${name}`}
+        name={name}
+        type={type}
+        placeholder={placeholder}
+        required={required}
+        className="w-full border-b border-black/15 bg-transparent px-0 py-3 text-sm outline-none transition-colors duration-200 placeholder:text-[#070D14]/30 focus:border-[#C9A15A]"
+      />
+    </div>
+  );
+}
+
+function HomeContactCard({ icon: Icon, label, value, href }) {
+  return (
+    <a
+      href={href}
+      className="group flex items-center gap-5 border border-black/10 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#C9A15A] hover:shadow-[0_15px_45px_rgba(7,13,20,0.06)]"
+    >
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center bg-[#F7F4EE]">
+        <Icon className="h-5 w-5 text-[#070D14]" />
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B54A4A]">
+          {label}
+        </p>
+
+        <p className="mt-1 truncate text-sm font-semibold text-[#070D14]">
+          {value}
+        </p>
+      </div>
+
+      <ArrowRight
+        size={16}
+        className="text-[#C9A15A] transition-transform duration-300 group-hover:translate-x-1"
+      />
+    </a>
+  );
+}
 export default function Home() {
   const heroRef = useRef(null);
 
@@ -173,7 +233,47 @@ export default function Home() {
   const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
 
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
+  async function handleContactSubmit(e) {
+    e.preventDefault();
+
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    formData.append("access_key", "6a4675e0-a0cb-4a5e-a9d1-820162e76ac1");
+
+    formData.append("subject", "New Property Enquiry - Guru Estates Bank");
+
+    formData.append("from_name", "Guru Estates Bank Website");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitted(true);
+        form.reset();
+      } else {
+        setSubmitError("Unable to submit your enquiry. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+
+      setSubmitError("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
   // Search tab
   const [activeTab, setActiveTab] = useState("Buy");
 
@@ -1048,7 +1148,350 @@ export default function Home() {
       </section>
 
       <CurvedDivider dark flip />
+      {/* =====================================================
+          CONTACT / START A CONVERSATION
+      ===================================================== */}
+      <section
+        id="contact"
+        className="relative overflow-hidden bg-[#F7F4EE] px-5 py-20 sm:px-8 lg:px-10 lg:py-28"
+      >
+        {/* Decorative elements */}
+        <div className="pointer-events-none absolute -right-32 top-20 h-[450px] w-[450px] rounded-full border border-[#C9A15A]/20" />
 
+        <div className="pointer-events-none absolute -right-10 top-44 h-[280px] w-[280px] rounded-full border border-[#C9A15A]/15" />
+
+        <div className="mx-auto max-w-7xl">
+          {/* Section Heading */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={reveal}
+            className="mb-14 max-w-3xl"
+          >
+            <SectionKicker>Let's Talk Property</SectionKicker>
+
+            <h2 className="mt-5 font-serif text-4xl leading-tight sm:text-6xl">
+              Start a conversation.
+            </h2>
+
+            <p className="mt-5 max-w-2xl text-[#5B6470]">
+              Tell us what you're looking for and our team will help you
+              identify the right property opportunity and next step.
+            </p>
+          </motion.div>
+
+          {/* Contact Grid */}
+          <div className="grid gap-10 lg:grid-cols-[1.4fr_0.7fr]">
+            {/* =================================================
+                FORM
+            ================================================= */}
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 30,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+                margin: "-80px",
+              }}
+              transition={{
+                duration: 0.8,
+                ease,
+              }}
+              className="bg-white p-6 shadow-[0_20px_70px_rgba(7,13,20,0.08)] sm:p-10 lg:p-12"
+            >
+              {submitted ? (
+                /* ================================
+                   SUCCESS STATE
+                ================================= */
+                <div className="flex min-h-[500px] flex-col items-center justify-center text-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[#C9A15A] bg-[#F7F4EE]">
+                    <Send className="h-6 w-6 text-[#070D14]" />
+                  </div>
+
+                  <p className="mt-7 text-xs font-bold uppercase tracking-[0.25em] text-[#B54A4A]">
+                    Enquiry Received
+                  </p>
+
+                  <h3 className="mt-4 font-serif text-4xl">Thank you.</h3>
+
+                  <p className="mt-4 max-w-md leading-7 text-[#5B6470]">
+                    We've received your enquiry and a member of our team will
+                    get in touch shortly.
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSubmitted(false);
+                      setSubmitError("");
+                    }}
+                    className="mt-8 border-b border-[#070D14] pb-1 text-sm font-semibold"
+                  >
+                    Send another enquiry
+                  </button>
+                </div>
+              ) : (
+                <>
+                  {/* FORM TITLE */}
+                  <div className="mb-10">
+                    <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#B54A4A]">
+                      Your Requirement
+                    </span>
+
+                    <h3 className="mt-4 font-serif text-3xl sm:text-4xl">
+                      Tell us what you need.
+                    </h3>
+                  </div>
+
+                  <form onSubmit={handleContactSubmit} className="space-y-7">
+                    {/* NAME + PHONE */}
+                    <div className="grid gap-7 sm:grid-cols-2">
+                      <HomeContactField
+                        label="Full Name"
+                        name="name"
+                        placeholder="Your name"
+                        required
+                      />
+
+                      <HomeContactField
+                        label="Phone Number"
+                        name="phone"
+                        placeholder="+91"
+                        type="tel"
+                        required
+                      />
+                    </div>
+
+                    {/* EMAIL */}
+                    <HomeContactField
+                      label="Email Address"
+                      name="email"
+                      placeholder="you@example.com"
+                      type="email"
+                      required
+                    />
+
+                    {/* INTEREST */}
+                    <div>
+                      <label className="mb-3 block text-xs font-bold uppercase tracking-[0.16em] text-[#070D14]/55">
+                        I'm Interested In
+                      </label>
+
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        {[
+                          "Buying a Home",
+                          "Property Investment",
+                          "Commercial Property",
+                          "SCO / Plot",
+                          "Leasing / Rental",
+                          "Property Advisory",
+                          "NRI Requirement",
+                        ].map((interest) => (
+                          <label
+                            key={interest}
+                            className="group flex cursor-pointer items-center gap-3 border border-black/10 px-4 py-3 transition-all duration-200 hover:border-[#C9A15A] hover:bg-[#F7F4EE]"
+                          >
+                            <input
+                              type="radio"
+                              name="interest"
+                              value={interest}
+                              required
+                              className="h-4 w-4 accent-[#070D14]"
+                            />
+
+                            <span className="text-sm text-[#070D14]/70">
+                              {interest}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* LOCATION + BUDGET */}
+                    <div className="grid gap-7 sm:grid-cols-2">
+                      <HomeContactField
+                        label="Preferred Location"
+                        name="location"
+                        placeholder="e.g. Gurugram"
+                      />
+
+                      <HomeContactField
+                        label="Budget"
+                        name="budget"
+                        placeholder="e.g. ₹2 Cr – ₹5 Cr"
+                      />
+                    </div>
+
+                    {/* PROJECT */}
+                    <HomeContactField
+                      label="Project"
+                      name="project"
+                      placeholder="Optional — specific project if any"
+                    />
+
+                    {/* MESSAGE */}
+                    <div>
+                      <label
+                        htmlFor="home-message"
+                        className="mb-3 block text-xs font-bold uppercase tracking-[0.16em] text-[#070D14]/55"
+                      >
+                        Message
+                      </label>
+
+                      <textarea
+                        id="home-message"
+                        name="message"
+                        rows={5}
+                        required
+                        placeholder="Tell us a little more about what you're looking for..."
+                        className="w-full resize-none border border-black/10 bg-[#F7F4EE]/50 px-4 py-4 text-sm leading-6 outline-none transition-colors placeholder:text-[#070D14]/30 focus:border-[#C9A15A]"
+                      />
+                    </div>
+
+                    {/* PRIVACY + SUBMIT */}
+                    <div className="border-t border-black/10 pt-7">
+                      <p className="text-xs leading-6 text-[#070D14]/45">
+                        By submitting this form, you agree to be contacted
+                        regarding your enquiry. See our{" "}
+                        <a
+                          href="/privacy-policy"
+                          className="font-semibold text-[#070D14] underline underline-offset-2"
+                        >
+                          Privacy Policy
+                        </a>{" "}
+                        for more information.
+                      </p>
+
+                      {/* ERROR */}
+                      {submitError && (
+                        <div className="mt-5 border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+                          {submitError}
+                        </div>
+                      )}
+
+                      {/* BUTTON */}
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="group mt-6 inline-flex w-full items-center justify-center gap-3 bg-[#070D14] px-7 py-4 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-[#151e28] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            Submit Enquiry
+                            <ArrowRight
+                              size={16}
+                              className="transition-transform group-hover:translate-x-1"
+                            />
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </>
+              )}
+            </motion.div>
+
+            {/* =================================================
+                CONTACT INFORMATION
+            ================================================= */}
+            <motion.aside
+              initial={{
+                opacity: 0,
+                x: 25,
+              }}
+              whileInView={{
+                opacity: 1,
+                x: 0,
+              }}
+              viewport={{
+                once: true,
+                margin: "-80px",
+              }}
+              transition={{
+                duration: 0.8,
+                delay: 0.1,
+                ease,
+              }}
+              className="space-y-4"
+            >
+              {/* CALL */}
+              <HomeContactCard
+                icon={Phone}
+                label="Call Us"
+                value="Talk to an Advisor"
+                href="tel:+918282888888"
+              />
+
+              {/* WHATSAPP */}
+              <HomeContactCard
+                icon={MessageCircle}
+                label="WhatsApp"
+                value="WhatsApp an Advisor"
+                href="https://wa.me/918282888888"
+              />
+
+              {/* EMAIL */}
+              <HomeContactCard
+                icon={Mail}
+                label="Email"
+                value="guruestatesbank@gmail.com"
+                href="mailto:guruestatesbank@gmail.com"
+              />
+
+              {/* OFFICE */}
+              <div className="bg-[#070D14] p-7 text-white sm:p-8">
+                <MapPin className="h-6 w-6 text-[#C9A15A]" />
+
+                <p className="mt-8 text-xs font-bold uppercase tracking-[0.2em] text-[#C9A15A]">
+                  Office
+                </p>
+
+                <h3 className="mt-3 font-serif text-2xl">Visit our office</h3>
+
+                <p className="mt-3 text-sm leading-7 text-white/55">
+                  B-120 A, Revenue Estate Village of Khushrupur, Vishnu Garden,
+                  Keshav Kunj, Sector-105, Dwarka Expressway, 122001
+                </p>
+
+                <div className="mt-7 border-t border-white/10 pt-6">
+                  <div className="flex items-center gap-3 text-sm text-white/60">
+                    <Clock3 className="h-4 w-4 text-[#C9A15A]" />
+                    <span>Working hours to be confirmed</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* TRUST CARD */}
+              <div className="border border-[#C9A15A]/40 bg-white p-7 sm:p-8">
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#B54A4A]">
+                  Why Speak With Us?
+                </span>
+
+                <h3 className="mt-4 font-serif text-2xl leading-tight">
+                  Start with your requirement,
+                  <span className="text-[#B54A4A]"> not a property list.</span>
+                </h3>
+
+                <p className="mt-4 text-sm leading-7 text-[#5B6470]">
+                  Tell us your goals, location and budget. We'll help you
+                  understand the relevant options and next steps.
+                </p>
+              </div>
+            </motion.aside>
+          </div>
+        </div>
+      </section>
       {/* =====================================================
           FINAL CTA
       ===================================================== */}
